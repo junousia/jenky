@@ -3,21 +3,33 @@ $(function() {
         idAttribute: 'name',
         initialize: function() {
             this.set('displayName', this.displayName());
+            this.set('failCount', this.failCount());
             this.on('change:name', function() {
                 this.set('displayName', this.displayName());
             }, this);
         },
         displayName: function() {
-            return this.get('name').replace(/_/g, ' ');
+            return window.jenky.conf.jenky.translate[this.get('name')]? window.jenky.conf.jenky.translate[this.get('name')] : this.get('name').replace(/_/g, ' ');
         },
         realDuration: function() {
             return Date.now() - this.get('lastBuild').timestamp;
+        },
+        failCount: function() {
+            var lastBuild = this.get('lastBuild')
+            actions = lastBuild['actions'].filter(function(x){if(x['failCount']) return true;});
+
+            try {
+                return actions[0]['failCount'] + " failed"
+            }
+            catch(err) {
+                return "";
+            }
         }
     });
 
     var JobsList = Backbone.Collection.extend({
         model: Job,
-        url: window.jenky.conf.jenkins.url + '/api/json?tree=jobs[name,color,lastBuild[building,timestamp,estimatedDuration]]',
+        url: window.jenky.conf.jenkins.url + '/api/json?tree=jobs[name,color,lastBuild[building,timestamp,estimatedDuration,actions[failCount]]]',
         sync: function(method, model, options) {
             if (method !== "read")
                 return;
@@ -39,10 +51,32 @@ $(function() {
                 existing.set(job);
                 existing.trigger('change'); // TODO
             }
+        },
+        comparators: {
+            color: function(a) {
+                var color = a.get('color');
+                switch (color) {
+                case 'yellow':
+                case 'yellow_anime':
+                    return 1;
+                    break;
+                case 'red_anime':
+                case 'red':
+                    return 0;
+                    break;
+                default:
+                    return 2;
+                    break;
+                }
+            },
+            name: function(a) {
+                return a.get('name')
+            }
         }
     });
 
     var jobs = window.jenky.jobs = new JobsList();
+    jobs.comparator = jobs.comparators[window.jenky.conf.jenky.sortkey];
 
     var JobView = Backbone.View.extend({
         tagName: "li",
@@ -66,11 +100,9 @@ $(function() {
                 return;
 
             var main = progressElement.prev();
-
             var progress = this.model.realDuration();
             var duration = this.model.get('lastBuild').estimatedDuration;
             var p = progress / duration;
-
             progressElement.css({
                 width: '' + Math.round(p * main.width()) + 'px'
             });

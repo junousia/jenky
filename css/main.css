@@ -129,11 +129,24 @@ body {
     }
 }
 
+#failCount {
+    color: red;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
+    font-size: 3em;
+    float: right;
+    margin-right: 5%;
+    margin-top: 20px;
+    text-align: center;
+    -webkit-border-radius: 30px;
+    -moz-border-radius: 30px;
+    border-radius: 30px;
+    background-color: #ffe2db;
+}
 
 h1, h2, h3, h4, h5, h6 {
     font-weight: 400;
 }
-
 
 li {
     margin-top: 0;
@@ -141,6 +154,7 @@ li {
     position: relative;
     display: block;
     overflow-x: hidden;
+    overflow-y: hidden;
     width: 100%;
 }
 
@@ -168,12 +182,28 @@ h2.progress {
     color: #00bfff;
 }
 
+.yellow {
+    color: #d8d632;
+}
+
+.yellow_anime {
+    color: #00bfff;
+}
+
 .red {
     color: #ff4500;
 }
 
 .red_anime {
-    color: #9370db;
+    color: #00bfff;
+}
+
+.disabled {
+    color: lightgray;
+}
+
+.disabled_anime {
+    color: #00bfff;
 }
 
 .grey {
