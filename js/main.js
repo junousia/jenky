@@ -87,7 +87,7 @@ $(function() {
         },
         render: function() {
             var rendered = this.template(_.extend({}, this.model.toJSON(), {
-                previousColor: this.model.previousAttributes.color
+                previousColor: this.model.previousAttributes().color.replace(/_anime/g, '')
             }));
             this.$el.html(rendered);
             this.showProgress();
