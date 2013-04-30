@@ -60,18 +60,18 @@ $(function() {
         },
         comparators: {
             color: function(a) {
-                var color = a.get('color');
-                switch (color) {
-                case 'yellow':
-                case 'yellow_anime':
-                    return 1;
-                    break;
-                case 'red_anime':
+                switch (a.get('color').replace(/_anime/g, '')) {
                 case 'red':
                     return 0;
                     break;
-                default:
+                case 'yellow':
+                    return 1;
+                    break;
+                case 'blue':
                     return 2;
+                    break;
+                default:
+                    return 3;
                     break;
                 }
             },
