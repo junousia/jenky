@@ -14,22 +14,27 @@ $(function() {
         realDuration: function() {
             return Date.now() - this.get('lastBuild').timestamp;
         },
+        filterEmpty: function(job) {
+            return job['failCount']
+        },
         failCount: function() {
             var lastBuild = this.get('lastBuild')
-            actions = lastBuild['actions'].filter(function(x){if(x['failCount']) return true;});
-
-            try {
-                return actions[0]['failCount']
-            }
-            catch(err) {
-                return "";
-            }
+            action = lastBuild['actions'].filter(this.filterEmpty)[0];
+            return action? action['failCount'] : ""
         }
     });
 
     var JobsList = Backbone.Collection.extend({
         model: Job,
         url: window.jenky.conf.jenkins.url + '/api/json?tree=jobs[name,color,lastBuild[building,timestamp,estimatedDuration,actions[failCount]]]',
+        initialize: function() {
+            this.on('change:color', function() {
+                this.sort()
+            })
+        },
+        filter: function(job) {
+            return window.jenky.conf.jenky.filter.indexOf(job.name) !== -1? false : true
+        },
         sync: function(method, model, options) {
             if (method !== "read")
                 return;
@@ -39,7 +44,7 @@ $(function() {
                 dataType: 'jsonp',
                 jsonp: 'jsonp'
             }).then(_.bind(function(response) {
-                _.each(response.jobs, this.addOrUpdate, this);
+                _.each(response.jobs.filter(this.filter), this.addOrUpdate, this);
             }, this)).promise();
         },
         addOrUpdate: function(job) {
@@ -47,6 +52,7 @@ $(function() {
 
             if (_.isUndefined(existing)) {
                 this.add(job);
+                this.sort()
             } else {
                 existing.set(job);
                 existing.trigger('change'); // TODO
@@ -84,6 +90,7 @@ $(function() {
         initialize: function() {
             this.model.on('change', this.render, this);
             this.model.on('destroy', this.remove, this);
+            $(window).load(_.bind(this.showProgress, this))
         },
         render: function() {
             var rendered = this.template(_.extend({}, this.model.toJSON(), {
@@ -112,9 +119,10 @@ $(function() {
     var JenkyView = Backbone.View.extend({
         el: $('#jobs'),
         initialize: function() {
-            jobs.on('add', this.addOne, this);
-            jobs.on('reset', this.addAll, this);
-            jobs.on('all', this.render, this);
+            this.collection = jobs
+            this.collection.on('add', this.addOne, this);
+            this.collection.on('reset', this.addAll, this);
+            this.collection.on('all', this.render, this);
             $(window).resize(_.throttle(_.bind(this.render, this), 200));
         },
         render: function() {
