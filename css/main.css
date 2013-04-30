@@ -20,7 +20,6 @@ textarea {
 
 body {
     font-size: 1em;
-    line-height: 1.4;
 }
 
 /*
@@ -133,7 +132,7 @@ body {
     color: red;
     padding-left: 0.5em;
     padding-right: 0.5em;
-    font-size: 4em;
+    font-size: 3em;
     float: right;
     margin-right: 5%;
     text-align: center;
@@ -158,7 +157,7 @@ li {
 }
 
 h2 {
-    font-size: 100px;
+    font-size: 4em;
     display: inline-block;
     white-space: nowrap;
     position: absolute;
