@@ -133,14 +133,13 @@ body {
     color: red;
     padding-left: 0.5em;
     padding-right: 0.5em;
-    font-size: 3em;
+    font-size: 4em;
     float: right;
     margin-right: 5%;
-    margin-top: 20px;
     text-align: center;
-    -webkit-border-radius: 30px;
-    -moz-border-radius: 30px;
-    border-radius: 30px;
+    -webkit-border-radius: 1.2em;
+    -moz-border-radius: 1.2em;
+    border-radius: 1.2em;
     background-color: #ffe2db;
 }
 

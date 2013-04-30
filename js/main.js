@@ -19,7 +19,7 @@ $(function() {
             actions = lastBuild['actions'].filter(function(x){if(x['failCount']) return true;});
 
             try {
-                return actions[0]['failCount'] + " failed"
+                return actions[0]['failCount']
             }
             catch(err) {
                 return "";
