@@ -152,7 +152,6 @@ li {
     position: relative;
     display: block;
     overflow-x: hidden;
-    overflow-y: hidden;
     width: 100%;
 }
 
