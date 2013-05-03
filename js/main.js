@@ -4,8 +4,9 @@ $(function() {
         initialize: function() {
             this.set('displayName', this.displayName());
             this.set('failCount', this.failCount());
-            this.on('change:name', function() {
+            this.on('change', function() {
                 this.set('displayName', this.displayName());
+                this.set('failCount', this.failCount());
             }, this);
         },
         displayName: function() {
