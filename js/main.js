@@ -10,7 +10,8 @@ $(function() {
             }, this);
         },
         displayName: function() {
-            return window.jenky.conf.jenky.translate[this.get('name')]? window.jenky.conf.jenky.translate[this.get('name')] : this.get('name').replace(/_/g, ' ');
+            var translation = window.jenky.conf.jenky.translate[this.get('name')]
+            return translation? translation : this.get('name').replace(/_/g, ' ');
         },
         realDuration: function() {
             return Date.now() - this.get('lastBuild').timestamp;
@@ -63,16 +64,16 @@ $(function() {
             color: function(a) {
                 switch (a.get('color').replace(/_anime/g, '')) {
                 case 'red':
-                    return 0;
+                    return [0,a.get('name')];
                     break;
                 case 'yellow':
-                    return 1;
+                    return [1,a.get('name')];
                     break;
                 case 'blue':
-                    return 2;
+                    return [2,a.get('name')];
                     break;
                 default:
-                    return 3;
+                    return [3,a.get('name')];
                     break;
                 }
             },
