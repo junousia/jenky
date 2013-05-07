@@ -9,7 +9,9 @@
         jenky: {
             updateInterval: 10 * seconds,
             font: 'freight-sans-pro, Ubuntu, Helvetica, Segoe UI, sans-serif',
-            typekitKitId: null
+            typekitKitId: null,
+            translate : {}, // e.g. { unit_test: "unit" }
+            filter: [] // e.g. [ "unit_test" ]
         }
     };
 }(window));
