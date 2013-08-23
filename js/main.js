@@ -4,6 +4,7 @@ $(function() {
         initialize: function() {
             this.set('displayName', this.displayName());
             this.set('failCount', this.failCount());
+            this.set('buildNumber', this.buildNumber());
             this.on('change', function() {
                 this.set('displayName', this.displayName());
                 this.set('failCount', this.failCount());
@@ -23,12 +24,18 @@ $(function() {
             var lastBuild = this.get('lastBuild')
             action = lastBuild['actions'].filter(this.filterEmpty)[0];
             return action? action['failCount'] : ""
-        }
+        },
+        buildNumber: function() {
+            return this.get('lastBuild')['number']
+        },
+        url: function() {
+            return this.get('url');
+        },
     });
 
     var JobsList = Backbone.Collection.extend({
         model: Job,
-        url: window.jenky.conf.jenkins.url + '/api/json?tree=jobs[name,color,lastBuild[building,timestamp,estimatedDuration,actions[failCount]]]',
+        url: window.jenky.conf.jenkins.url + '/api/json?tree=jobs[name,color,url,lastBuild[building,number,timestamp,estimatedDuration,actions[failCount]]]',
         initialize: function() {
             this.on('change:color', function() {
                 this.sort()

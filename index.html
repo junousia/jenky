@@ -36,11 +36,11 @@
 
         <script type="text/template" id="job-template">
             <% if (!_.isNull(lastBuild) && lastBuild.building) { %>
-                <h2 class="<%= previousColor %>"><%= displayName %></h2>
+                <h2 class="<%= previousColor %>" onclick="window.location='<%= url %>/<%= buildNumber %>';"><%= displayName %></h2>
                 <h2 class="progress <%= color %>"><%= displayName %></h2>
             <% } else { %>
                 <div id="failCount"><%= failCount %></div>
-                <h2 class="<%= color %>"><%= displayName %></h2>
+                <h2 class="<%= color %>" onclick="window.location='<%= url %>/<%= buildNumber %>';"><%= displayName %></h2>
             <% } %>
         </script>
     </body>
