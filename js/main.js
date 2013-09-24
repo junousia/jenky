@@ -5,9 +5,11 @@ $(function() {
             this.set('displayName', this.displayName());
             this.set('failCount', this.failCount());
             this.set('buildNumber', this.buildNumber());
+            this.set('lastBuilt', this.lastBuilt());
             this.on('change', function() {
                 this.set('displayName', this.displayName());
                 this.set('failCount', this.failCount());
+                this.set('lastBuilt', this.lastBuilt());
             }, this);
         },
         displayName: function() {
@@ -31,6 +33,12 @@ $(function() {
         url: function() {
             return this.get('url');
         },
+        lastBuilt: function() {
+            timediff = (Date.now() - this.get('lastBuild').timestamp) / (3600*1000)
+            if (timediff >= 24) {
+                return "> " + Math.floor(timediff/24) + " day(s) ago"
+            }
+        }
     });
 
     var JobsList = Backbone.Collection.extend({
