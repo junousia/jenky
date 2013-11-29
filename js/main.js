@@ -102,8 +102,21 @@ $(function() {
     jobs.comparator = jobs.comparators[window.jenky.conf.jenky.sortkey];
 
     var JobView = Backbone.View.extend({
-        tagName: "li",
+        tagName: "div",
+        className: "progress",
         template: _.template($('#job-template').html()),
+        mapColor: function(color) {
+            switch(color.replace(/_anime/g,'')) {
+                case 'red':
+                    return 'progress-bar-danger'
+                case 'yellow':
+                    return 'progress-bar-warning'
+                case 'blue':
+                    return 'progress-bar-success'
+                default:
+                    return 'progress-bar-info'
+            }
+        },
         initialize: function() {
             this.model.on('change', this.render, this);
             this.model.on('destroy', this.remove, this);
@@ -111,25 +124,35 @@ $(function() {
         },
         render: function() {
             var rendered = this.template(_.extend({}, this.model.toJSON(), {
-                previousColor: this.model.previousAttributes().color.replace(/_anime/g, '')
+                previousColor: this.model.previousAttributes().color.replace(/_anime/g, ''),
+                color: this.mapColor(this.model.get('color'))
             }));
             this.$el.html(rendered);
             this.showProgress();
             return this;
         },
         showProgress: function() {
-            var progressElement = this.$el.find('.progress');
+            var progressElement = this.$el.find('.progress-bar');
 
             if (progressElement.length === 0)
                 return;
 
-            var main = progressElement.prev();
             var progress = this.model.realDuration();
-            var duration = this.model.get('lastBuild').estimatedDuration;
-            var p = progress / duration;
-            progressElement.css({
-                width: '' + Math.round(p * main.width()) + 'px'
-            });
+            var lastBuild = this.model.get('lastBuild')
+            var duration = lastBuild.estimatedDuration;
+
+            if(lastBuild.building === false) {
+                progressElement.css({
+                    width: '100%'
+                }); 
+                progressElement.data('aria-valuenow', 100);
+            } else {
+                var p = Math.round((progress / duration) * 100);
+                progressElement.css({
+                    width: '' + p + '%'
+                 });
+                progressElement.attr('aria-valuenow', p);
+             }
         }
     });
 
@@ -142,27 +165,7 @@ $(function() {
             this.collection.on('all', this.render, this);
             $(window).resize(_.throttle(_.bind(this.render, this), 200));
         },
-        render: function() {
-            var windowHeight = $(window).height();
-
-            var topMargin = 50;
-            var leftMargin = 40;
-
-            var containerHeight = windowHeight - topMargin;
-
-            this.$el.css({
-                height: containerHeight + 'px',
-                top: topMargin + 'px',
-                left: leftMargin + 'px'
-            });
-
-            var items = this.$el.find('li');
-            var height = Math.floor(containerHeight / Math.ceil(items.length / 2));
-
-            items.css({
-                height: height
-            });
-        },
+        render: function() { },
         addOne: function(job) {
             var view = new JobView({model: job});
             view.render().$el.appendTo(this.$el);
