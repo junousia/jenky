@@ -1,48 +1,64 @@
-#jobs {
+body {
     margin: 10px;
 }
 
-@media only screen and (min-width: 1200px) {
-    #jobs {
-        margin: 10px;
+#jobs {
+    column-gap: 0.5em;
+    -moz-column-gap: 0.5em;
+    -webkit-column-gap: 0.5em;
+}
 
+@media only screen and (min-width: 900px) {
+    #jobs {
         columns: 2;
         -webkit-columns: 2;
         -moz-columns: 2;
-
-        column-gap: 50px;
-        -moz-column-gap: 50px;
-        -webkit-column-gap: 50px;
-
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 95%;
     }
 }
 
+@media only screen and (min-width: 1680px) {
+    #jobs {
+        columns: 3;
+        -webkit-columns: 3;
+        -moz-columns: 3;
+    }
+}
+
+.progress .progress-bar {
+    -webkit-transition: none;
+    -moz-transition: none;
+    -ms-transition: none;
+    -o-transition: none;
+    transition: none;
+}
+
 .progress-bar {
-    font-size: 25px;
-    height: 50px;
-    padding: 12px;
+    height: 2em;
     text-align: left;
+    font-size: 2em;
+    padding: 0.7em;
+    text-shadow: 1px 1px 4px#000;
+    text-transform: lowercase;
 }
 
 .progress {
-    font-size: 30px;
-    height: 50px;
+    height: inherit;
+    margin-bottom: 0.5em;
 }
 
 .built {
-    font-size: 15px;
-    float: right;
     font-family: 'Helvetica';
+    font-weight: lighter;
+    float: right;
+    font-size: 0.5em;
     border-radius: 15px;
 }
 
 .failed {
+    font-size: 1.5em;
+    font-weight: lighter;
     float: right;
-    font-family: 'Helvetica';
+    margin-left: 0.2em;
     border-radius: 15px;
 }
 
