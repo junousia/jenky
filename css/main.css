@@ -33,9 +33,8 @@ body {
 }
 
 .progress-bar {
-    height: 2em;
     text-align: left;
-    font-size: 2em;
+    font-size: 3em;
     padding: 0.7em;
     text-shadow: 1px 1px 4px#000;
     text-transform: lowercase;
@@ -56,15 +55,14 @@ body {
     font-family: 'Helvetica';
     font-weight: lighter;
     float: right;
-    font-size: 0.5em;
+    font-size: 0.4em;
     border-radius: 15px;
 }
 
 .failed {
-    font-size: 1.5em;
     font-weight: lighter;
     float: right;
-    margin-left: 0.2em;
+    margin-left: 0.4em;
     border-radius: 15px;
 }
 
