@@ -146,13 +146,16 @@ $(function() {
                     width: '100%'
                 }); 
                 progressElement.data('aria-valuenow', 100);
+                if(this.model.get('color') === 'aborted') {
+                    progressElement.parent().addClass('grayscale')
+                }
             } else {
                 var p = Math.round((progress / duration) * 100);
                 progressElement.css({
                     width: '' + p + '%'
                  });
                 progressElement.attr('aria-valuenow', p);
-             }
+            }
         }
     });
 
