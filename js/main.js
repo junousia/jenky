@@ -140,16 +140,12 @@ $(function() {
             var progress = this.model.realDuration();
             var lastBuild = this.model.get('lastBuild')
             var duration = lastBuild.estimatedDuration;
-
-            if(lastBuild.building === false) {
-                progressElement.css({
-                    width: '100%'
-                }); 
-                progressElement.data('aria-valuenow', 100);
-                if(this.model.get('color').match('(aborted|disabled)')) {
-                    progressElement.parent().addClass('grayscale')
-                }
-            } else {
+            if(this.model.get('color').match('(aborted|disabled)')) {
+                progressElement.parent().addClass('grayscale')
+            }
+            
+            if(lastBuild.building === true) {
+                console.debug("building")
                 var p = Math.round((progress / duration) * 100);
                 progressElement.css({
                     width: '' + p + '%'
