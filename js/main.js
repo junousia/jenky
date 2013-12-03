@@ -146,7 +146,7 @@ $(function() {
                     width: '100%'
                 }); 
                 progressElement.data('aria-valuenow', 100);
-                if(this.model.get('color') === 'aborted') {
+                if(this.model.get('color').match('(aborted|disabled)')) {
                     progressElement.parent().addClass('grayscale')
                 }
             } else {
