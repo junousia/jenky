@@ -143,6 +143,7 @@ $(function() {
             
             if(lastBuild.building === true) {
                 progressElement.parent().addClass('progress-striped active')
+                progressElement.parent().addClass(this.mapColor(this.model.previousAttributes().color.replace(/_anime/g, '')))
                 var p = Math.round((progress / duration) * 100);
                 progressElement.css({
                     width: '' + p + '%'
